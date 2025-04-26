@@ -1,6 +1,8 @@
 # Django-Weather-app-
 
-## Features
+
+
+![sfsf](https://github.com/user-attachments/assets/d965fd62-f056-4bcc-80fc-721741a73505)
 
 - Real-time weather data for major Pakistani cities
 - Clean and responsive user interface
