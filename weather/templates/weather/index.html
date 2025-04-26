@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding-top: 70px;
+            background: url('{% static "images/GT.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #0083b0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #00b4db;
+        }
+        .weather-info {
+            margin-top: 20px;
+        }
+        .temperature {
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .description {
+            color: #ddd;
+            text-transform: capitalize;
+        }
+        .details p {
+            margin: 5px 0;
+        }
+        .error {
+            color: #ff0033;
+            margin-top: 10px;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.2);  /* Changed from 0.8 to 0.2 for more transparency */
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo {
+            display: flex;  
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: rgb(0, 0, 0);
+        }
+        .logo img {
+            width: 32px;
+            height: 32px;
+        }
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+            .logo span {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">
+            <img src="{% static 'images/sun-logo.svg' %}" alt="Sun Logo">
+            <span> PAK Weather </span>
+        </a>
+    </nav>
+    <div class="container">
+        <h1> Weather App</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <select name="city" required>
+                <option value="">Select a City</option>
+                {% for city in cities %}
+                <option value="{{ city }}">{{ city }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Get Weather</button>
+        </form>
+
+        {% if temperature %}
+        <div class="weather-info">
+            <h2>{{ city }}</h2>
+            <div class="temperature">{{ temperature }}°C</div>
+            <div class="description">{{ description }}</div>
+            <div class="details">
+                <p>Humidity: {{ humidity }}%</p>
+                <p>Wind Speed: {{ wind_speed }} m/s</p>
+            </div>
+            <img src="http://openweathermap.org/img/w/{{ icon }}.png" alt="Weather icon">
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>
